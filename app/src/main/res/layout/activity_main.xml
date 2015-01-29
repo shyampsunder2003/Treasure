@@ -60,9 +60,10 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Enter"
         android:id="@+id/button2"
         android:layout_below="@+id/editText"
         android:layout_toLeftOf="@+id/textView2"
-        android:layout_toStartOf="@+id/textView2" />
+        android:layout_toStartOf="@+id/textView2"
+        android:text="Enter"
+        android:onClick="gameStart" />
 </RelativeLayout>

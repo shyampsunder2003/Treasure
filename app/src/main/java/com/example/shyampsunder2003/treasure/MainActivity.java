@@ -14,8 +14,13 @@ import com.parse.FindCallback;
 import com.parse.Parse;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.codec.binary.Hex;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
 import java.util.List;
 
@@ -37,6 +42,27 @@ public class MainActivity extends ActionBarActivity {
     }
     //Just a little change
 
+    public void gameStart(View view) throws UnsupportedEncodingException, NoSuchAlgorithmException {
+        String password=editPassword.getText().toString();
+        final MessageDigest messageDigest = MessageDigest.getInstance("MD5");
+        messageDigest.reset();
+        messageDigest.update(password.getBytes(Charset.forName("UTF8")));
+        final byte[] resultByte = messageDigest.digest();
+        final String result = new String(Hex.encodeHex(resultByte));
+        if(result.compareTo("1a1dc91c907325c69271ddf0c944bc72")==0&&clueStatus.getText().toString().compareTo("Completed")==0)   //The MD5 of 'pass'
+        {
+            Toast.makeText(getApplicationContext(), "Success",Toast.LENGTH_LONG).show();
+        }
+        else if(result.compareTo("1a1dc91c907325c69271ddf0c944bc72")!=0)
+        {
+            Toast.makeText(getApplicationContext(), "Incorrect Password",Toast.LENGTH_LONG).show();
+        }
+        else
+        {
+            Toast.makeText(getApplicationContext(), "Download the clues before proceeding",Toast.LENGTH_LONG).show();
+        }
+
+    }
     public boolean isOnline() {
 
         Runtime runtime = Runtime.getRuntime();
@@ -55,14 +81,23 @@ public class MainActivity extends ActionBarActivity {
     {
         final DatabaseHelp db= new DatabaseHelp(this);
         if(isOnline()) {
-            Log.d("score", "Start");
-            ParseQuery<ParseObject> query = ParseQuery.getQuery("TestObject");
+            //Log.d("score", "Start");
+            ParseQuery<ParseObject> query = ParseQuery.getQuery("ClueObject");
             query.findInBackground(new FindCallback<ParseObject>() {
                 @Override
                 public void done(List<ParseObject> parseObjects, com.parse.ParseException e) {
                     if (e == null) {
-                        Log.d("score", "Retrieved " + parseObjects.size() + " scores");
-                        db.open();
+                        Log.d("Download", "Retrieved " + parseObjects.size() + " scores");
+                        for(int i=0;i<parseObjects.size();++i) {
+                            String lat = parseObjects.get(i).getString("Latitude");
+                            String longitude = parseObjects.get(i).getString("Longitude");
+                            Log.d("Download", lat + " " + longitude);
+                            db.open();
+                            db.createEntry(lat, longitude);
+                            Log.d("Database",db.getData());
+                            db.close();
+                            }
+
 
                         clueStatus.setText("Completed");
                     } else {
