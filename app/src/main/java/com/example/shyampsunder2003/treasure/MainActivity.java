@@ -53,6 +53,7 @@ public class MainActivity extends ActionBarActivity {
     }
     public void downloadClues(View view)
     {
+        final DatabaseHelp db= new DatabaseHelp(this);
         if(isOnline()) {
             Log.d("score", "Start");
             ParseQuery<ParseObject> query = ParseQuery.getQuery("TestObject");
@@ -61,6 +62,8 @@ public class MainActivity extends ActionBarActivity {
                 public void done(List<ParseObject> parseObjects, com.parse.ParseException e) {
                     if (e == null) {
                         Log.d("score", "Retrieved " + parseObjects.size() + " scores");
+                        db.open();
+
                         clueStatus.setText("Completed");
                     } else {
                         Log.d("score", "Error: " + e.getMessage());
