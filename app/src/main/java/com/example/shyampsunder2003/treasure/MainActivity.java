@@ -1,5 +1,6 @@
 package com.example.shyampsunder2003.treasure;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -51,7 +52,8 @@ public class MainActivity extends ActionBarActivity {
         final String result = new String(Hex.encodeHex(resultByte));
         if(result.compareTo("1a1dc91c907325c69271ddf0c944bc72")==0&&clueStatus.getText().toString().compareTo("Completed")==0)   //The MD5 of 'pass'
         {
-            Toast.makeText(getApplicationContext(), "Success",Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(this, Locate.class);
+            startActivity(intent);
         }
         else if(result.compareTo("1a1dc91c907325c69271ddf0c944bc72")!=0)
         {

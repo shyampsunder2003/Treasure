@@ -4,6 +4,6 @@
     <string name="app_name">Treasure</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    <string name="title_activity_location">Location</string>
+    <string name="title_activity_location">Locate</string>
 
 </resources>
