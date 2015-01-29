@@ -43,7 +43,7 @@ public class MainActivity extends ActionBarActivity {
     }
     //Just a little change
 
-    public void gameStart(View view) throws UnsupportedEncodingException, NoSuchAlgorithmException {
+    public void gameStart(View view) throws UnsupportedEncodingException, NoSuchAlgorithmException {     //On clicking the start button
         String password=editPassword.getText().toString();
         final MessageDigest messageDigest = MessageDigest.getInstance("MD5");
         messageDigest.reset();
@@ -65,7 +65,7 @@ public class MainActivity extends ActionBarActivity {
         }
 
     }
-    public boolean isOnline() {
+    public boolean isOnline() {                         //To check if the app has internet connectivity
 
         Runtime runtime = Runtime.getRuntime();
         try {
@@ -79,7 +79,7 @@ public class MainActivity extends ActionBarActivity {
 
         return false;
     }
-    public void downloadClues(View view)
+    public void downloadClues(View view)                //Downloads clues from the cloud
     {
         final DatabaseHelp db= new DatabaseHelp(this);
         if(isOnline()) {
@@ -90,15 +90,15 @@ public class MainActivity extends ActionBarActivity {
                 public void done(List<ParseObject> parseObjects, com.parse.ParseException e) {
                     if (e == null) {
                         Log.d("Download", "Retrieved " + parseObjects.size() + " scores");
+                        db.open();
+                        db.delete();                    //To be removed on deployment
                         for(int i=0;i<parseObjects.size();++i) {
                             String lat = parseObjects.get(i).getString("Latitude");
                             String longitude = parseObjects.get(i).getString("Longitude");
                             Log.d("Download", lat + " " + longitude);
-                            db.open();
                             db.createEntry(lat, longitude);
-                            Log.d("Database",db.getData());
-                            db.close();
                             }
+                        db.close();
 
 
                         clueStatus.setText("Completed");
