@@ -1,6 +1,7 @@
 package com.example.shyampsunder2003.treasure;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -30,15 +31,23 @@ public class MainActivity extends ActionBarActivity {
 
     TextView clueStatus;
     EditText editPassword;
+    SharedPreferences sharedpreferences;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        clueStatus=(TextView) findViewById(R.id.textView2);
-        editPassword=(EditText) findViewById(R.id.editText);
-        Parse.enableLocalDatastore(this);
-        Parse.initialize(this, "A2bfZu7LOncINvmg1TEfLBUZe9eZ0BjvedsuXq9e", "aFSDZ9JlxcbLVDZ4bj9N1Y8YrGdQ6VvOrHDX1zgR");
-
+        sharedpreferences=getSharedPreferences("firstpref",MODE_PRIVATE);
+        if(sharedpreferences.contains("first"))
+        {
+            Intent intent = new Intent(this, Locate.class);
+            startActivity(intent);
+        }
+        else {
+            setContentView(R.layout.activity_main);
+            clueStatus = (TextView) findViewById(R.id.textView2);
+            editPassword = (EditText) findViewById(R.id.editText);
+            Parse.enableLocalDatastore(this);
+            Parse.initialize(this, "A2bfZu7LOncINvmg1TEfLBUZe9eZ0BjvedsuXq9e", "aFSDZ9JlxcbLVDZ4bj9N1Y8YrGdQ6VvOrHDX1zgR");
+        }
 
     }
     //Just a little change
@@ -52,6 +61,8 @@ public class MainActivity extends ActionBarActivity {
         final String result = new String(Hex.encodeHex(resultByte));
         if(result.compareTo("1a1dc91c907325c69271ddf0c944bc72")==0&&clueStatus.getText().toString().compareTo("Completed")==0)   //The MD5 of 'pass'
         {
+            SharedPreferences.Editor editor=sharedpreferences.edit();
+            editor.putInt("first",1);
             Intent intent = new Intent(this, Locate.class);
             startActivity(intent);
         }
