@@ -38,6 +38,7 @@ public class MainActivity extends ActionBarActivity {
         sharedpreferences=getSharedPreferences("firstpref",MODE_PRIVATE);
         if(sharedpreferences.contains("first"))
         {
+            Log.d("Shared","Second launch detected");
             Intent intent = new Intent(this, Locate.class);
             startActivity(intent);
         }
@@ -60,18 +61,17 @@ public class MainActivity extends ActionBarActivity {
         messageDigest.update(password.getBytes(Charset.forName("UTF8")));
         final byte[] resultByte = messageDigest.digest();
         final String result = new String(Hex.encodeHex(resultByte));
+        db.open();
         if(result.compareTo("1a1dc91c907325c69271ddf0c944bc72")==0&&clueStatus.getText().toString().compareTo("Completed")==0)   //The MD5 of 'pass'
         {
             SharedPreferences.Editor editor=sharedpreferences.edit();
             editor.putInt("first",1);
             Intent intent = new Intent(this, Locate.class);
+            editor.commit();
+            db.close();
             startActivity(intent);
         }
-        else if(result.compareTo("1a1dc91c907325c69271ddf0c944bc72")!=0)
-        {
-            Toast.makeText(getApplicationContext(), "Incorrect Password",Toast.LENGTH_LONG).show();
-        }
-        else if(clueStatus.getText().toString().compareTo("Completed")==0)
+        else if(clueStatus.getText().toString().compareTo("Completed")!=0)
         {
             Toast.makeText(getApplicationContext(), "Download the clues before proceeding",Toast.LENGTH_LONG).show();
         }
@@ -79,6 +79,7 @@ public class MainActivity extends ActionBarActivity {
         {
             db.createResult("Override","Success","Override");
             Intent intent = new Intent(this, Locate.class);
+            db.close();
             startActivity(intent);
         }
         else if (result.compareTo("1fe90703693781b5943e0adc9c159fbe")==0&&clueStatus.getText().toString().compareTo("Completed")==0) //jump2
@@ -86,6 +87,7 @@ public class MainActivity extends ActionBarActivity {
             db.createResult("Override","Success","Override");
             db.createResult("Override","Success","Override");
             Intent intent = new Intent(this, Locate.class);
+            db.close();
             startActivity(intent);
         }
         else if (result.compareTo("92e796e6a40378c59b6cc79a053b3ba9")==0&&clueStatus.getText().toString().compareTo("Completed")==0) //jump3
@@ -94,6 +96,7 @@ public class MainActivity extends ActionBarActivity {
             db.createResult("Override","Success","Override");
             db.createResult("Override","Success","Override");
             Intent intent = new Intent(this, Locate.class);
+            db.close();
             startActivity(intent);
 
         }
@@ -104,6 +107,7 @@ public class MainActivity extends ActionBarActivity {
             db.createResult("Override","Success","Override");
             db.createResult("Override","Success","Override");
             Intent intent = new Intent(this, Locate.class);
+            db.close();
             startActivity(intent);
         }
         else if (result.compareTo("fa7f742ff35b412262d2ff887aacb6f2")==0&&clueStatus.getText().toString().compareTo("Completed")==0) //jump5
@@ -114,6 +118,7 @@ public class MainActivity extends ActionBarActivity {
             db.createResult("Override","Success","Override");
             db.createResult("Override","Success","Override");
             Intent intent = new Intent(this, Locate.class);
+            db.close();
             startActivity(intent);
         }
         else if (result.compareTo("c1d8d6150fe78af43df3a745ace29431")==0&&clueStatus.getText().toString().compareTo("Completed")==0) //jump6
@@ -125,10 +130,12 @@ public class MainActivity extends ActionBarActivity {
             db.createResult("Override","Success","Override");
             db.createResult("Override","Success","Override");
             Intent intent = new Intent(this, Locate.class);
+            db.close();
             startActivity(intent);
         }
         else if (result.compareTo("f874229e8e8cb7069d1c07cdb75992f9")==0&&clueStatus.getText().toString().compareTo("Completed")==0) //jump7
         {
+
             db.createResult("Override","Success","Override");
             db.createResult("Override","Success","Override");
             db.createResult("Override","Success","Override");
@@ -137,18 +144,24 @@ public class MainActivity extends ActionBarActivity {
             db.createResult("Override","Success","Override");
             db.createResult("Override","Success","Override");
             Intent intent = new Intent(this, Locate.class);
+            db.close();
             startActivity(intent);
         }
         else if (result.compareTo("53e61336bb49ec978968786b07dea50b")==0) //results
         {
 
         }
+        else if(result.compareTo("1a1dc91c907325c69271ddf0c944bc72")!=0)
+        {
+            Toast.makeText(getApplicationContext(), "Incorrect Password",Toast.LENGTH_LONG).show();
+        }
+        db.close();
 
 
     }
     public boolean isOnline() {                         //To check if the app has internet connectivity
 
-        Runtime runtime = Runtime.getRuntime();
+       /* Runtime runtime = Runtime.getRuntime();
         try {
 
             Process ipProcess = runtime.exec("/system/bin/ping -c 1 8.8.8.8");
@@ -156,9 +169,9 @@ public class MainActivity extends ActionBarActivity {
             return (exitValue == 0);
 
         } catch (IOException e)          { e.printStackTrace(); }
-        catch (InterruptedException e) { e.printStackTrace(); }
+        catch (InterruptedException e) { e.printStackTrace(); } */
 
-        return false;
+        return true;
     }
     public void downloadClues(View view)                //Downloads clues from the cloud
     {
