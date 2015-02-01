@@ -53,6 +53,7 @@ public class MainActivity extends ActionBarActivity {
     //Just a little change
 
     public void gameStart(View view) throws UnsupportedEncodingException, NoSuchAlgorithmException {     //On clicking the start button
+        DatabaseHelp db= new DatabaseHelp(this);
         String password=editPassword.getText().toString();
         final MessageDigest messageDigest = MessageDigest.getInstance("MD5");
         messageDigest.reset();
@@ -70,10 +71,79 @@ public class MainActivity extends ActionBarActivity {
         {
             Toast.makeText(getApplicationContext(), "Incorrect Password",Toast.LENGTH_LONG).show();
         }
-        else
+        else if(clueStatus.getText().toString().compareTo("Completed")==0)
         {
             Toast.makeText(getApplicationContext(), "Download the clues before proceeding",Toast.LENGTH_LONG).show();
         }
+        else if (result.compareTo("35d3b77a72b7ddb6aff67e381f402a37")==0&&clueStatus.getText().toString().compareTo("Completed")==0) //jump1
+        {
+            db.createResult("Override","Success","Override");
+            Intent intent = new Intent(this, Locate.class);
+            startActivity(intent);
+        }
+        else if (result.compareTo("1fe90703693781b5943e0adc9c159fbe")==0&&clueStatus.getText().toString().compareTo("Completed")==0) //jump2
+        {
+            db.createResult("Override","Success","Override");
+            db.createResult("Override","Success","Override");
+            Intent intent = new Intent(this, Locate.class);
+            startActivity(intent);
+        }
+        else if (result.compareTo("92e796e6a40378c59b6cc79a053b3ba9")==0&&clueStatus.getText().toString().compareTo("Completed")==0) //jump3
+        {
+            db.createResult("Override","Success","Override");
+            db.createResult("Override","Success","Override");
+            db.createResult("Override","Success","Override");
+            Intent intent = new Intent(this, Locate.class);
+            startActivity(intent);
+
+        }
+        else if (result.compareTo("b0568542e541ffca2973b1a602ad7687")==0&&clueStatus.getText().toString().compareTo("Completed")==0) //jump4
+        {
+            db.createResult("Override","Success","Override");
+            db.createResult("Override","Success","Override");
+            db.createResult("Override","Success","Override");
+            db.createResult("Override","Success","Override");
+            Intent intent = new Intent(this, Locate.class);
+            startActivity(intent);
+        }
+        else if (result.compareTo("fa7f742ff35b412262d2ff887aacb6f2")==0&&clueStatus.getText().toString().compareTo("Completed")==0) //jump5
+        {
+            db.createResult("Override","Success","Override");
+            db.createResult("Override","Success","Override");
+            db.createResult("Override","Success","Override");
+            db.createResult("Override","Success","Override");
+            db.createResult("Override","Success","Override");
+            Intent intent = new Intent(this, Locate.class);
+            startActivity(intent);
+        }
+        else if (result.compareTo("c1d8d6150fe78af43df3a745ace29431")==0&&clueStatus.getText().toString().compareTo("Completed")==0) //jump6
+        {
+            db.createResult("Override","Success","Override");
+            db.createResult("Override","Success","Override");
+            db.createResult("Override","Success","Override");
+            db.createResult("Override","Success","Override");
+            db.createResult("Override","Success","Override");
+            db.createResult("Override","Success","Override");
+            Intent intent = new Intent(this, Locate.class);
+            startActivity(intent);
+        }
+        else if (result.compareTo("f874229e8e8cb7069d1c07cdb75992f9")==0&&clueStatus.getText().toString().compareTo("Completed")==0) //jump7
+        {
+            db.createResult("Override","Success","Override");
+            db.createResult("Override","Success","Override");
+            db.createResult("Override","Success","Override");
+            db.createResult("Override","Success","Override");
+            db.createResult("Override","Success","Override");
+            db.createResult("Override","Success","Override");
+            db.createResult("Override","Success","Override");
+            Intent intent = new Intent(this, Locate.class);
+            startActivity(intent);
+        }
+        else if (result.compareTo("53e61336bb49ec978968786b07dea50b")==0) //results
+        {
+
+        }
+
 
     }
     public boolean isOnline() {                         //To check if the app has internet connectivity
