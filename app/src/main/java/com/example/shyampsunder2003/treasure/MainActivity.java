@@ -31,11 +31,13 @@ public class MainActivity extends ActionBarActivity {
     EditText editPassword;
     SharedPreferences sharedpreferences;
     Intent intentToLocate;
+
+    //Location Variables
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         sharedpreferences=getSharedPreferences("firstpref",MODE_PRIVATE);
-        intentToLocate = new Intent(this, MapsActivity.class);
+        intentToLocate = new Intent(this, Locate.class);
         if(sharedpreferences.contains("first"))
         {
             Log.d("Shared","Second launch detected");
@@ -229,4 +231,6 @@ public class MainActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+
 }

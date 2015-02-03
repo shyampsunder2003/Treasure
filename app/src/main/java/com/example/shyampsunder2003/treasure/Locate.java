@@ -2,12 +2,12 @@ package com.example.shyampsunder2003.treasure;
 
 import android.content.Intent;
 import android.location.Criteria;
+import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.location.Location;
+import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v7.app.ActionBarActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,11 +15,17 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.LocationSource;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 
-public class Locate extends ActionBarActivity implements LocationListener{
+public class Locate extends ActionBarActivity implements LocationListener, LocationSource{
     private String provider,clueData;
     TextView textLat,textLong,textAccuracy,textClue;
     Double lat,longi,clueLat,clueLongi;
@@ -27,20 +33,23 @@ public class Locate extends ActionBarActivity implements LocationListener{
     LocationManager service;
     DatabaseHelp db;
     int NumberOfCluesDone,delimiter;
+    private GoogleMap mMap;
+    private LocationSource.OnLocationChangedListener mlistener;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_location);
+        setContentView(R.layout.activity_maps);
+        setUpMapIfNeeded();
         service = (LocationManager) getSystemService(LOCATION_SERVICE);
         boolean enabled = service.isProviderEnabled(LocationManager.GPS_PROVIDER);
         if (!enabled) {
             Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
             startActivity(intent);
         }
-        textClue=(TextView) findViewById(R.id.textView11);
-        textLat=(TextView) findViewById(R.id.textView9);
-        textLong=(TextView) findViewById(R.id.textView8);
-        textAccuracy=(TextView) findViewById(R.id.textView5);
+        textClue=(TextView) findViewById(R.id.tvclueNum);
+        //textLat=(TextView) findViewById(R.id.textView9);
+        //textLong=(TextView) findViewById(R.id.textView8);
+        textAccuracy=(TextView) findViewById(R.id.tvAcc);
         Criteria criteria = new Criteria();
         provider = service.getBestProvider(criteria, false);
         Location location = service.getLastKnownLocation(provider);
@@ -48,12 +57,12 @@ public class Locate extends ActionBarActivity implements LocationListener{
             //System.out.println("Provider " + provider + " has been selected.");
             lat=location.getLatitude();
             longi=location.getLongitude();
-            textLat.setText(String.valueOf(location.getLatitude()));
-            textLong.setText(String.valueOf(location.getLongitude()));
+            //textLat.setText(String.valueOf(location.getLatitude()));
+            //textLong.setText(String.valueOf(location.getLongitude()));
             textAccuracy.setText("Location not available");
         } else {
-            textLat.setText("Location not available");
-            textLong.setText("Location not available");
+            //textLat.setText("Location not available");
+            //textLong.setText("Location not available");
             textAccuracy.setText("Location not available");
         }
         onCreateRepeat();
@@ -61,6 +70,28 @@ public class Locate extends ActionBarActivity implements LocationListener{
 
 
     }
+
+    private void setUpMapIfNeeded() {
+
+            // Do a null check to confirm that we have not already instantiated the map.
+            if (mMap == null) {
+                // Try to obtain the map from the SupportMapFragment.
+                mMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map))
+                        .getMap();
+                // Check if we were successful in obtaining the map.
+                if (mMap != null) {
+                    setUpMap();
+                }
+                mMap.setLocationSource(this);
+            }
+
+
+    }
+
+    private void setUpMap() {
+        mMap.setMyLocationEnabled(true);
+    }
+
     public void onCreateRepeat()
     {
         db= new DatabaseHelp(this);
@@ -91,11 +122,13 @@ public class Locate extends ActionBarActivity implements LocationListener{
 
     @Override
     public void onLocationChanged(Location location) {
+        mlistener.onLocationChanged(location);
+        mMap.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(location.getLatitude(), location.getLongitude())));
         lat=location.getLatitude();
         longi=location.getLongitude();
         accuracy=location.getAccuracy();
-        textLat.setText(String.valueOf(location.getLatitude()));
-        textLong.setText(String.valueOf(location.getLongitude()));
+        //textLat.setText(String.valueOf(location.getLatitude()));
+        //textLong.setText(String.valueOf(location.getLongitude()));
         textAccuracy.setText(String.valueOf(location.getAccuracy()));
     }
 
@@ -113,40 +146,44 @@ public class Locate extends ActionBarActivity implements LocationListener{
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy h:mm:ss a");
         String formattedDate = sdf.format(date);
         Log.d("Click","Entered method");
-        if(accuracy>=30)
-        {
-            Toast.makeText(getApplicationContext(), "Inaccurate location, ensure accuracy is less than 30", Toast.LENGTH_LONG).show();
-            db.open();
-            db.createResult(formattedDate,"Failure","Inaccurate");
-            db.close();
-        }
-        if(mockCheck())
-        {
-            Toast.makeText(getApplicationContext(), "Mock locations option is enabled, disable by going into Setting -> Developer Options, ",Toast.LENGTH_LONG).show();
-            db.open();
-            db.createResult(formattedDate,"Failure","Mock Locations");
-            db.close();
-        }
+
+
         Location currLocation=service.getLastKnownLocation(provider);
         Location clueLocation=service.getLastKnownLocation(provider);
-        currLocation.setLatitude(lat);
-        currLocation.setLongitude(longi);
-        clueLocation.setLatitude(clueLat);
-        clueLocation.setLongitude(clueLongi);
-        if(currLocation.distanceTo(clueLocation)<30)
-        {
-            Toast.makeText(getApplicationContext(), "Congratulations! Next clue loading...", Toast.LENGTH_LONG).show();
-            db.open();
-            db.createResult(formattedDate, "Success", "Success");
-            db.close();
-            onCreateRepeat();
+        if(lat == null || longi == null){
+            Toast.makeText(getApplicationContext(),"Location Unavailable", Toast.LENGTH_SHORT).show();
         }
-        else
-        {
-            Toast.makeText(getApplicationContext(), "Nope, keep trying!", Toast.LENGTH_LONG).show();
-            db.open();
-            db.createResult(formattedDate,"Failure","Wrong Location");
-            db.close();
+        else {
+            currLocation.setLatitude(lat);
+            currLocation.setLongitude(longi);
+            clueLocation.setLatitude(clueLat);
+            clueLocation.setLongitude(clueLongi);
+            if(mockCheck())
+            {
+                Toast.makeText(getApplicationContext(), "Mock locations option is enabled, disable by going into Setting -> Developer Options, ",Toast.LENGTH_LONG).show();
+                db.open();
+                db.createResult(formattedDate, "Failure", "Mock Locations");
+                db.close();
+            }
+            else if(accuracy>=30)
+            {
+                Toast.makeText(getApplicationContext(), "Inaccurate location, ensure accuracy is less than 30", Toast.LENGTH_LONG).show();
+                db.open();
+                db.createResult(formattedDate,"Failure","Inaccurate");
+                db.close();
+            }
+            else if (currLocation.distanceTo(clueLocation) < 30) {
+                Toast.makeText(getApplicationContext(), "Congratulations! Next clue loading...", Toast.LENGTH_LONG).show();
+                db.open();
+                db.createResult(formattedDate, "Success", "Success");
+                db.close();
+                onCreateRepeat();
+            } else {
+                Toast.makeText(getApplicationContext(), "Nope, keep trying!", Toast.LENGTH_LONG).show();
+                db.open();
+                db.createResult(formattedDate, "Failure", "Wrong Location");
+                db.close();
+            }
         }
     }
 
@@ -186,5 +223,15 @@ public class Locate extends ActionBarActivity implements LocationListener{
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void activate(OnLocationChangedListener onLocationChangedListener) {
+        mlistener=onLocationChangedListener;
+    }
+
+    @Override
+    public void deactivate() {
+        mlistener=null;
     }
 }
