@@ -1,6 +1,7 @@
 package com.example.shyampsunder2003.treasure;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
@@ -97,12 +98,22 @@ public class Locate extends ActionBarActivity implements LocationListener, Locat
         db= new DatabaseHelp(this);
         db.open();
         NumberOfCluesDone=db.countSolvedClues();
-        clueData=db.getData(NumberOfCluesDone+1);
-        db.close();
-        delimiter=clueData.indexOf(" ");                                                    //Gets the index of the space
-        clueLat=Double.parseDouble(clueData.substring(0,delimiter));                     //Converts first half of clueData String
-        clueLongi=Double.parseDouble(clueData.substring(delimiter+1,clueData.length())); //Converts second half of clueData String
-        textClue.setText(String.valueOf(NumberOfCluesDone+1));
+        Log.d("Clue Number",String.valueOf(NumberOfCluesDone));
+        if(NumberOfCluesDone>=db.getCluesSize())
+        {
+            Log.d("Clue Number","Reached inside if");
+            Toast.makeText(getApplicationContext(), "Please report to the organizers", Toast.LENGTH_LONG).show();
+            db.close();
+        }
+        else {
+            Log.d("Clue Number","Reached inside else");
+            clueData = db.getData(NumberOfCluesDone + 1);
+            db.close();
+            delimiter = clueData.indexOf(" ");                                                    //Gets the index of the space
+            clueLat = Double.parseDouble(clueData.substring(0, delimiter));                     //Converts first half of clueData String
+            clueLongi = Double.parseDouble(clueData.substring(delimiter + 1, clueData.length())); //Converts second half of clueData String
+            textClue.setText(String.valueOf(NumberOfCluesDone + 1));
+        }
 
     }
     /* Request updates at startup */
@@ -146,8 +157,9 @@ public class Locate extends ActionBarActivity implements LocationListener, Locat
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy h:mm:ss a");
         String formattedDate = sdf.format(date);
         Log.d("Click","Entered method");
-
-
+        db.open();
+        int NumberOfClues=db.getCluesSize();
+        db.close();
         Location currLocation=service.getLastKnownLocation(provider);
         Location clueLocation=service.getLastKnownLocation(provider);
         if(lat == null || longi == null){
@@ -158,7 +170,7 @@ public class Locate extends ActionBarActivity implements LocationListener, Locat
             currLocation.setLongitude(longi);
             clueLocation.setLatitude(clueLat);
             clueLocation.setLongitude(clueLongi);
-            if(mockCheck())
+            if(mockCheck()&&false)
             {
                 Toast.makeText(getApplicationContext(), "Mock locations option is enabled, disable by going into Setting -> Developer Options, ",Toast.LENGTH_LONG).show();
                 db.open();
@@ -172,9 +184,21 @@ public class Locate extends ActionBarActivity implements LocationListener, Locat
                 db.createResult(formattedDate,"Failure","Inaccurate");
                 db.close();
             }
+            else if(NumberOfCluesDone==NumberOfClues)
+            {
+                Toast.makeText(getApplicationContext(), "You have already solved all the clues", Toast.LENGTH_LONG).show();
+            }
             else if (currLocation.distanceTo(clueLocation) < 30) {
-                Toast.makeText(getApplicationContext(), "Congratulations! Next clue loading...", Toast.LENGTH_LONG).show();
                 db.open();
+                if(NumberOfCluesDone<NumberOfClues-1)
+                    Toast.makeText(getApplicationContext(), "Congratulations! Next clue loading...", Toast.LENGTH_LONG).show();
+                else {
+                    Toast.makeText(getApplicationContext(), "Congratulations! You have finished solving all the clues!", Toast.LENGTH_LONG).show();
+                    SharedPreferences sharedpreferences=getSharedPreferences("firstpref",MODE_PRIVATE);
+                    SharedPreferences.Editor editor=sharedpreferences.edit();
+                    editor.clear();
+                    editor.commit();
+                }
                 db.createResult(formattedDate, "Success", "Success");
                 db.close();
                 onCreateRepeat();

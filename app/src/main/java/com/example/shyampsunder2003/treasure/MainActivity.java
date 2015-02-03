@@ -18,10 +18,12 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.codec.binary.Hex;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.LinkedList;
 import java.util.List;
 
 
@@ -162,7 +164,7 @@ public class MainActivity extends ActionBarActivity {
     }
     public boolean isOnline() {                         //To check if the app has internet connectivity
 
-       /* Runtime runtime = Runtime.getRuntime();
+        Runtime runtime = Runtime.getRuntime();
         try {
 
             Process ipProcess = runtime.exec("/system/bin/ping -c 1 8.8.8.8");
@@ -170,7 +172,7 @@ public class MainActivity extends ActionBarActivity {
             return (exitValue == 0);
 
         } catch (IOException e)          { e.printStackTrace(); }
-        catch (InterruptedException e) { e.printStackTrace(); } */
+        catch (InterruptedException e) { e.printStackTrace(); }
 
         return true;
     }
@@ -187,12 +189,18 @@ public class MainActivity extends ActionBarActivity {
                         Log.d("Download", "Retrieved " + parseObjects.size() + " scores");
                         db.open();
                         db.delete();                    //To be removed on deployment
-                        for(int i=0;i<parseObjects.size();++i) {
-                            String lat = parseObjects.get(i).getString("Latitude");
-                            String longitude = parseObjects.get(i).getString("Longitude");
+                        int i,j;
+                        for(i=0;i<parseObjects.size();++i) {
+                            for (j = 0; j < parseObjects.size(); ++j) {
+                                int val=parseObjects.get(j).getInt("Number");
+                                if(val==i+1)
+                                    break;
+                            }
+                            String lat = parseObjects.get(j).getString("Latitude");
+                            String longitude = parseObjects.get(j).getString("Longitude");
                             Log.d("Download", lat + " " + longitude);
                             db.createEntry(lat, longitude);
-                            }
+                        }
                         db.close();
 
 
