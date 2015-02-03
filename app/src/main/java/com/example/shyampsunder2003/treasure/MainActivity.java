@@ -2,8 +2,8 @@ package com.example.shyampsunder2003.treasure;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,12 +18,10 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.codec.binary.Hex;
 
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.text.ParseException;
 import java.util.List;
 
 
@@ -32,20 +30,21 @@ public class MainActivity extends ActionBarActivity {
     TextView clueStatus;
     EditText editPassword;
     SharedPreferences sharedpreferences;
+    Intent intentToLocate;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         sharedpreferences=getSharedPreferences("firstpref",MODE_PRIVATE);
+        intentToLocate = new Intent(this, MapsActivity.class);
         if(sharedpreferences.contains("first"))
         {
             Log.d("Shared","Second launch detected");
-            Intent intent = new Intent(this, Locate.class);
-            startActivity(intent);
+            startActivity(intentToLocate);
         }
         else {
-            setContentView(R.layout.activity_main);
-            clueStatus = (TextView) findViewById(R.id.textView2);
-            editPassword = (EditText) findViewById(R.id.editText);
+            setContentView(R.layout.main);
+            clueStatus = (TextView) findViewById(R.id.tvClues);
+            editPassword = (EditText) findViewById(R.id.etPass);
             Parse.enableLocalDatastore(this);
             Parse.initialize(this, "A2bfZu7LOncINvmg1TEfLBUZe9eZ0BjvedsuXq9e", "aFSDZ9JlxcbLVDZ4bj9N1Y8YrGdQ6VvOrHDX1zgR");
         }
@@ -66,10 +65,10 @@ public class MainActivity extends ActionBarActivity {
         {
             SharedPreferences.Editor editor=sharedpreferences.edit();
             editor.putInt("first",1);
-            Intent intent = new Intent(this, Locate.class);
+
             editor.commit();
             db.close();
-            startActivity(intent);
+            startActivity(intentToLocate);
         }
         else if(clueStatus.getText().toString().compareTo("Completed")!=0)
         {
@@ -78,26 +77,26 @@ public class MainActivity extends ActionBarActivity {
         else if (result.compareTo("35d3b77a72b7ddb6aff67e381f402a37")==0&&clueStatus.getText().toString().compareTo("Completed")==0) //jump1
         {
             db.createResult("Override","Success","Override");
-            Intent intent = new Intent(this, Locate.class);
+
             db.close();
-            startActivity(intent);
+            startActivity(intentToLocate);
         }
         else if (result.compareTo("1fe90703693781b5943e0adc9c159fbe")==0&&clueStatus.getText().toString().compareTo("Completed")==0) //jump2
         {
             db.createResult("Override","Success","Override");
             db.createResult("Override","Success","Override");
-            Intent intent = new Intent(this, Locate.class);
+
             db.close();
-            startActivity(intent);
+            startActivity(intentToLocate);
         }
         else if (result.compareTo("92e796e6a40378c59b6cc79a053b3ba9")==0&&clueStatus.getText().toString().compareTo("Completed")==0) //jump3
         {
             db.createResult("Override","Success","Override");
             db.createResult("Override","Success","Override");
             db.createResult("Override","Success","Override");
-            Intent intent = new Intent(this, Locate.class);
+
             db.close();
-            startActivity(intent);
+            startActivity(intentToLocate);
 
         }
         else if (result.compareTo("b0568542e541ffca2973b1a602ad7687")==0&&clueStatus.getText().toString().compareTo("Completed")==0) //jump4
@@ -106,9 +105,9 @@ public class MainActivity extends ActionBarActivity {
             db.createResult("Override","Success","Override");
             db.createResult("Override","Success","Override");
             db.createResult("Override","Success","Override");
-            Intent intent = new Intent(this, Locate.class);
+
             db.close();
-            startActivity(intent);
+            startActivity(intentToLocate);
         }
         else if (result.compareTo("fa7f742ff35b412262d2ff887aacb6f2")==0&&clueStatus.getText().toString().compareTo("Completed")==0) //jump5
         {
@@ -117,9 +116,9 @@ public class MainActivity extends ActionBarActivity {
             db.createResult("Override","Success","Override");
             db.createResult("Override","Success","Override");
             db.createResult("Override","Success","Override");
-            Intent intent = new Intent(this, Locate.class);
+
             db.close();
-            startActivity(intent);
+            startActivity(intentToLocate);
         }
         else if (result.compareTo("c1d8d6150fe78af43df3a745ace29431")==0&&clueStatus.getText().toString().compareTo("Completed")==0) //jump6
         {
@@ -129,9 +128,9 @@ public class MainActivity extends ActionBarActivity {
             db.createResult("Override","Success","Override");
             db.createResult("Override","Success","Override");
             db.createResult("Override","Success","Override");
-            Intent intent = new Intent(this, Locate.class);
+
             db.close();
-            startActivity(intent);
+            startActivity(intentToLocate);
         }
         else if (result.compareTo("f874229e8e8cb7069d1c07cdb75992f9")==0&&clueStatus.getText().toString().compareTo("Completed")==0) //jump7
         {
@@ -143,9 +142,9 @@ public class MainActivity extends ActionBarActivity {
             db.createResult("Override","Success","Override");
             db.createResult("Override","Success","Override");
             db.createResult("Override","Success","Override");
-            Intent intent = new Intent(this, Locate.class);
+
             db.close();
-            startActivity(intent);
+            startActivity(intentToLocate);
         }
         else if (result.compareTo("53e61336bb49ec978968786b07dea50b")==0) //results
         {

@@ -1,0 +1,108 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    tools:context="in.itrix15.treasure.MainActivity"
+    android:weightSum="3"
+    android:background="#EAEAEA">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?colorPrimary"
+        android:orientation="vertical"
+        android:layout_weight="1"
+        android:padding="72dp"
+
+        >
+
+        <com.rengwuxian.materialedittext.MaterialEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/etPass"
+            android:layout_gravity="center"
+            android:hint="Pass Key"
+            android:text=""
+            android:textCursorDrawable="@drawable/text_cursor_cyan"
+            android:textSize="34sp"
+            app:baseColor="@android:color/white"
+            app:floatingLabel="highlight"
+            app:maxCharacters="20"
+            app:primaryColor="?colorAccent"
+            app:singleLineEllipsis="true"
+            android:password="true"/>
+
+
+
+    </LinearLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+        <com.melnykov.fab.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="270dp"
+            android:layout_marginTop="210dp"
+            android:scaleType="center"
+            android:src="@drawable/ic_navigation_accept"
+            android:layout_gravity="left|top"
+            app:fab_colorNormal="#FF4081"
+            app:fab_colorPressed="#E91E63"
+            android:onClick="gameStart"/>
+
+
+        <android.support.v7.widget.CardView
+            android:layout_gravity="bottom"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="15dp"
+
+            android:layout_below="@id/fab"
+
+            android:stateListAnimator="@drawable/translation_selector"
+            android:elevation="2dp"
+            android:clickable="true"
+            android:layout_weight="2"
+            android:id="@+id/view">
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/btClues"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Download Clues"
+                android:layout_gravity="center"
+                android:onClick="downloadClues"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tvClues"
+                android:text="Status: Incomplete"
+                android:layout_below="@id/btClues"
+                android:layout_gravity="bottom|center"
+                android:layout_marginBottom="50dp"/>
+
+        </android.support.v7.widget.CardView>
+
+
+    </RelativeLayout>
+    <!--<android.support.v7.widget.CardView
+      android:layout_gravity="center"
+      android:layout_width="fill_parent"
+      android:layout_height="fill_parent"
+      android:layout_marginTop="180dp"
+      android:padding="10dp"
+      android:stateListAnimator="@drawable/translation_selector"
+      android:elevation="2dp"
+      android:clickable="true"
+      android:layout_weight="2"
+      />
+  -->
+
+
+</FrameLayout>
