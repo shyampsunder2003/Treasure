@@ -112,8 +112,8 @@ public class DatabaseHelp {
         String result="";
         for (c.moveToFirst(); !c.isAfterLast(); c.moveToNext()){
             result = c.getString(iRow) + " " + c.getString(iTime) + " " + c.getString(iResult) ;
+            l.addLast(result);
         }
-        l.addLast(result);
         return l;
     }
 
