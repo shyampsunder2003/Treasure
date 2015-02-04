@@ -56,6 +56,7 @@ public class MainActivity extends ActionBarActivity {
             welcome.setTypeface(font);
             welcome.setText("DIGIHUNT 2015");
             Parse.enableLocalDatastore(this);
+
             Parse.initialize(this, "A2bfZu7LOncINvmg1TEfLBUZe9eZ0BjvedsuXq9e", "aFSDZ9JlxcbLVDZ4bj9N1Y8YrGdQ6VvOrHDX1zgR");
         }
 
@@ -86,24 +87,24 @@ public class MainActivity extends ActionBarActivity {
         }
         else if (result.compareTo("35d3b77a72b7ddb6aff67e381f402a37")==0&&clueStatus.getText().toString().compareTo("Completed")==0) //jump1
         {
-            db.createResult("Override","Success","Override");
+            db.createResult("Clue 1","Success","Override");
 
             db.close();
             startActivity(intentToLocate);
         }
         else if (result.compareTo("1fe90703693781b5943e0adc9c159fbe")==0&&clueStatus.getText().toString().compareTo("Completed")==0) //jump2
         {
-            db.createResult("Override","Success","Override");
-            db.createResult("Override","Success","Override");
+            db.createResult("Clue 2","Success","Override");
+            //db.createResult("Override","Success","Override");
 
             db.close();
             startActivity(intentToLocate);
         }
         else if (result.compareTo("92e796e6a40378c59b6cc79a053b3ba9")==0&&clueStatus.getText().toString().compareTo("Completed")==0) //jump3
         {
-            db.createResult("Override","Success","Override");
-            db.createResult("Override","Success","Override");
-            db.createResult("Override","Success","Override");
+            db.createResult("Clue 3","Success","Override");
+            //db.createResult("Override","Success","Override");
+            //db.createResult("Override","Success","Override");
 
             db.close();
             startActivity(intentToLocate);
@@ -111,33 +112,24 @@ public class MainActivity extends ActionBarActivity {
         }
         else if (result.compareTo("b0568542e541ffca2973b1a602ad7687")==0&&clueStatus.getText().toString().compareTo("Completed")==0) //jump4
         {
-            db.createResult("Override","Success","Override");
-            db.createResult("Override","Success","Override");
-            db.createResult("Override","Success","Override");
-            db.createResult("Override","Success","Override");
+            db.createResult("Clue 4","Success","Override");
+
 
             db.close();
             startActivity(intentToLocate);
         }
         else if (result.compareTo("fa7f742ff35b412262d2ff887aacb6f2")==0&&clueStatus.getText().toString().compareTo("Completed")==0) //jump5
         {
-            db.createResult("Override","Success","Override");
-            db.createResult("Override","Success","Override");
-            db.createResult("Override","Success","Override");
-            db.createResult("Override","Success","Override");
-            db.createResult("Override","Success","Override");
+            db.createResult("Clue 5","Success","Override");
+
 
             db.close();
             startActivity(intentToLocate);
         }
         else if (result.compareTo("c1d8d6150fe78af43df3a745ace29431")==0&&clueStatus.getText().toString().compareTo("Completed")==0) //jump6
         {
-            db.createResult("Override","Success","Override");
-            db.createResult("Override","Success","Override");
-            db.createResult("Override","Success","Override");
-            db.createResult("Override","Success","Override");
-            db.createResult("Override","Success","Override");
-            db.createResult("Override","Success","Override");
+            db.createResult("Clue 6","Success","Override");
+
 
             db.close();
             startActivity(intentToLocate);
@@ -145,19 +137,16 @@ public class MainActivity extends ActionBarActivity {
         else if (result.compareTo("f874229e8e8cb7069d1c07cdb75992f9")==0&&clueStatus.getText().toString().compareTo("Completed")==0) //jump7
         {
 
-            db.createResult("Override","Success","Override");
-            db.createResult("Override","Success","Override");
-            db.createResult("Override","Success","Override");
-            db.createResult("Override","Success","Override");
-            db.createResult("Override","Success","Override");
-            db.createResult("Override","Success","Override");
-            db.createResult("Override","Success","Override");
+            db.createResult("Clue 7","Success","Override");
+
 
             db.close();
             startActivity(intentToLocate);
         }
         else if (result.compareTo("53e61336bb49ec978968786b07dea50b")==0) //results
         {
+            db.createResult("Admin","Results","Override");
+
             /*db.createResult("Override","Results","Override");
             db.createResult("Override","Results","Override");
             db.createResult("Override","Results","Override");

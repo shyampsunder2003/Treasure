@@ -14,19 +14,27 @@ public class ResultActivity extends Activity {
     DatabaseHelp db;
     TextView result;
     String tvResult;
-    LinkedList ll=new LinkedList();
+    LinkedList ll = new LinkedList();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.results);
-        result= (TextView) findViewById(R.id.tvResults);
-        db= new DatabaseHelp(getApplicationContext());
+        result = (TextView) findViewById(R.id.tvResults);
+        db = new DatabaseHelp(getApplicationContext());
         db.open();
-        ll=db.getResults();
+        ll = db.getResults();
         for (int i = 0; i < ll.size(); i++) {
-            tvResult= tvResult+'\n'+(ll.get(i));
+            tvResult = tvResult + '\n' + (ll.get(i));
         }
         result.setText(tvResult);
         db.close();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        //startActivity(new Intent(this, MainActivity.class));
+        finish();
     }
 }

@@ -1,7 +1,6 @@
 package com.example.shyampsunder2003.treasure;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
@@ -68,6 +67,8 @@ public class Locate extends ActionBarActivity implements LocationListener, Locat
             //textLong.setText("Location not available");
             textAccuracy.setText("Location N/A");
         }
+
+
         onCreateRepeat();
 
 
@@ -100,12 +101,19 @@ public class Locate extends ActionBarActivity implements LocationListener, Locat
         db= new DatabaseHelp(getApplicationContext());
         db.open();
         NumberOfCluesDone=db.countSolvedClues();
-        clueData=db.getData(NumberOfCluesDone+1);
-        db.close();
-        delimiter=clueData.indexOf(" ");                                                    //Gets the index of the space
-        clueLat=Double.parseDouble(clueData.substring(0,delimiter));                     //Converts first half of clueData String
-        clueLongi=Double.parseDouble(clueData.substring(delimiter+1,clueData.length())); //Converts second half of clueData String
-        textClue.setText(String.valueOf(NumberOfCluesDone+1));
+
+        //DIRTY PATCH to prevent getData on index(8+1) when back button is pressed from resultsActivity. I'm tired. 4.45 am. Going to Sleep
+        if(NumberOfCluesDone<=7) {
+            clueData = db.getData(NumberOfCluesDone + 1);
+            db.close();
+            delimiter = clueData.indexOf(" ");                                                    //Gets the index of the space
+            clueLat = Double.parseDouble(clueData.substring(0, delimiter));                     //Converts first half of clueData String
+            clueLongi = Double.parseDouble(clueData.substring(delimiter + 1, clueData.length())); //Converts second half of clueData String
+            textClue.setText(String.valueOf(NumberOfCluesDone + 1));
+        }
+        else
+            startActivity(new Intent(this,CongratsActivity.class));
+
 
     }
     /* Request updates at startup */
@@ -162,7 +170,7 @@ public class Locate extends ActionBarActivity implements LocationListener, Locat
             currLocation.setLongitude(longi);
             clueLocation.setLatitude(clueLat);
             clueLocation.setLongitude(clueLongi);
-            if(mockCheck())
+            /*if(mockCheck())
             {
                 //Toast.makeText(getApplicationContext(), "Mock locations option is enabled, disable by going into Setting -> Developer Options, ",Toast.LENGTH_LONG).show();
                 new MaterialDialog.Builder(this)
@@ -174,8 +182,8 @@ public class Locate extends ActionBarActivity implements LocationListener, Locat
                 db.open();
                 db.createResult(formattedDate, "Failure", "Mock Locations");
                 db.close();
-            }
-            else if(accuracy>=30)
+            }*/ //for testing
+            if(accuracy>=30)
             {
                 //Toast.makeText(getApplicationContext(), "Inaccurate location, ensure accuracy is less than 30", Toast.LENGTH_LONG).show();
                 new MaterialDialog.Builder(this)
@@ -215,11 +223,11 @@ public class Locate extends ActionBarActivity implements LocationListener, Locat
                     db.open();
                     db.createResult(formattedDate, "Success", "Success");
                     db.close();
-                    SharedPreferences sharedpreferences=getSharedPreferences("firstpref",MODE_PRIVATE);
+                    /*SharedPreferences sharedpreferences=getSharedPreferences("firstpref",MODE_PRIVATE);
                     SharedPreferences.Editor editor=sharedpreferences.edit();
                     editor.clear();
-                    editor.commit();
-                    Intent intent=new Intent(this,MainActivity.class);
+                    editor.commit();*/
+                    Intent intent=new Intent(this,CongratsActivity.class);
                     startActivity(intent);
 
                 }
@@ -295,5 +303,11 @@ public class Locate extends ActionBarActivity implements LocationListener, Locat
     @Override
     public void deactivate() {
         mlistener=null;
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        //startActivity(new Intent(this, MainActivity.class));
+        finish();
     }
 }
