@@ -3,6 +3,7 @@ package com.example.shyampsunder2003.treasure;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -21,7 +22,6 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.codec.binary.Hex;
 
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
@@ -31,7 +31,7 @@ import java.util.List;
 
 public class MainActivity extends ActionBarActivity {
 
-    TextView clueStatus;
+    TextView clueStatus, welcome;
     EditText editPassword;
     SharedPreferences sharedpreferences;
     Intent intentToLocate;
@@ -50,7 +50,11 @@ public class MainActivity extends ActionBarActivity {
         else {
             setContentView(R.layout.main);
             clueStatus = (TextView) findViewById(R.id.tvClues);
+            welcome= (TextView) findViewById(R.id.tvWelcome);
             editPassword = (EditText) findViewById(R.id.etPass);
+            Typeface font = Typeface.createFromAsset(getAssets(), "RobotoCondensed-Bold.ttf");
+            welcome.setTypeface(font);
+            welcome.setText("DIGIHUNT 2015");
             Parse.enableLocalDatastore(this);
             Parse.initialize(this, "A2bfZu7LOncINvmg1TEfLBUZe9eZ0BjvedsuXq9e", "aFSDZ9JlxcbLVDZ4bj9N1Y8YrGdQ6VvOrHDX1zgR");
         }

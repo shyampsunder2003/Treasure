@@ -60,11 +60,11 @@ public class Locate extends ActionBarActivity implements LocationListener, Locat
             longi=location.getLongitude();
             //textLat.setText(String.valueOf(location.getLatitude()));
             //textLong.setText(String.valueOf(location.getLongitude()));
-            textAccuracy.setText("Location not available");
+            textAccuracy.setText("Location N/A");
         } else {
             //textLat.setText("Location not available");
             //textLong.setText("Location not available");
-            textAccuracy.setText("Location not available");
+            textAccuracy.setText("Location N/A");
         }
         onCreateRepeat();
 
