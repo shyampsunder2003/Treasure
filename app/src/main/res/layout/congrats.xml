@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView  xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<LinearLayout
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="4">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView"
+        android:src="@drawable/congrats1"
+        android:scaleType="fitXY"
+        android:layout_weight="1"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        android:orientation="horizontal"
+        android:background="@color/indigo_500"
+        android:layout_weight="3"
+        android:weightSum="4">
+
+
+
+        <com.rengwuxian.materialedittext.MaterialEditText
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:id="@+id/etResults"
+            android:layout_gravity="center"
+            android:hint="Results Key"
+            android:textCursorDrawable="@drawable/text_cursor_cyan"
+            android:textSize="18sp"
+            app:baseColor="@android:color/white"
+            app:floatingLabel="highlight"
+            app:maxCharacters="20"
+            app:primaryColor="?colorAccent"
+            app:singleLineEllipsis="true"
+            android:password="true"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="4"
+            />
+
+
+        <com.melnykov.fab.FloatingActionButton  xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/fab"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+
+            android:scaleType="center"
+            android:src="@drawable/ic_navigation_accept"
+
+            app:fab_colorNormal="#FF4081"
+            app:fab_colorPressed="#E91E63"
+
+            android:layout_gravity="center_vertical|right"
+            android:layout_margin="10dp"
+
+            android:onClick="checkResults"
+            />
+
+
+    </LinearLayout>
+</LinearLayout>
+</ScrollView>
