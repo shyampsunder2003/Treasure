@@ -39,6 +39,11 @@
 
             android:label="@string/title_activity_location" >
         </activity>
+        <activity
+            android:name=".ResultActivity"
+
+            android:label="Results" >
+        </activity>
             </application>
 
 </manifest>

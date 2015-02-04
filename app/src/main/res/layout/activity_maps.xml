@@ -68,12 +68,14 @@
             android:orientation="vertical"
             android:clickable="true"
             android:focusable="false"
+
             android:id="@+id/dragView">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="68dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:background="@color/indigo_500">
 
                 <TextView
                     android:id="@+id/name"
@@ -84,15 +86,17 @@
                     android:text="CLUE:"
                     android:gravity="center_vertical"
                     android:paddingLeft="5dp"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold"
+                    android:textColor="#FFF"/>
                 <TextView
                     android:id="@+id/tvclueNum"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:textSize="14sp"
+                    android:textSize="24sp"
                     android:text="NULL"
                     android:gravity="center"
+                    android:textColor="#FFF"
                     />
 
                 <TextView
@@ -104,27 +108,44 @@
                     android:text="ACC:"
                     android:textStyle="bold"
                     android:gravity="center_vertical"
-                    android:paddingLeft="0dp"/>
+                    android:paddingLeft="0dp"
+                    android:textColor="#FFF"/>
                 <TextView
                     android:id="@+id/tvAcc"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:textSize="14sp"
+                    android:textSize="24sp"
                     android:text="NULL"
-
+                    android:textColor="#FFF"
                     android:gravity="center"
                     android:paddingLeft="0dp"/>
-                <Button
+                <com.melnykov.fab.FloatingActionButton  xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/fab"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+
+                    android:scaleType="center"
+                    android:src="@drawable/ic_navigation_accept"
+
+                    app:fab_colorNormal="#FF4081"
+                    app:fab_colorPressed="#E91E63"
+
+                    android:layout_gravity="center_vertical|right"
+                    android:layout_marginRight="10dp"
+
+                    android:onClick="clueCheck"/>
+                <!--<Button
                     android:id="@+id/follow"
                     android:layout_width="70dp"
                     android:layout_height="match_parent"
                     android:textSize="14sp"
                     android:text="Check"
+                    android:layout_gravity="center"
                     android:gravity="center_vertical|right"
                     android:paddingRight="10dp"
                     android:paddingLeft="10dp"
-                    android:onClick="clueCheck"/>
+                    android:onClick="clueCheck"/>-->
 
             </LinearLayout>
 

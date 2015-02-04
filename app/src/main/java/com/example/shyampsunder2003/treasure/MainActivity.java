@@ -23,7 +23,6 @@ import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.LinkedList;
 import java.util.List;
 
 
@@ -152,7 +151,16 @@ public class MainActivity extends ActionBarActivity {
         }
         else if (result.compareTo("53e61336bb49ec978968786b07dea50b")==0) //results
         {
+            db.createResult("Override","Results","Override");
+            db.createResult("Override","Results","Override");
+            db.createResult("Override","Results","Override");
+            db.createResult("Override","Results","Override");
+            db.createResult("Override","Results","Override");
+            db.createResult("Override","Results","Override");
+            db.createResult("Override","Results","Override");
 
+            db.close();
+            startActivity(new Intent(this,ResultActivity.class));
         }
         else if(result.compareTo("1a1dc91c907325c69271ddf0c944bc72")!=0)
         {

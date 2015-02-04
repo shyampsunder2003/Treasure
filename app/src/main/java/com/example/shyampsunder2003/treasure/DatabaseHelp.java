@@ -114,22 +114,8 @@ public class DatabaseHelp {
             result = c.getString(iRow) + " " + c.getString(iTime) + " " + c.getString(iResult) ;
             l.addLast(result);
         }
+
         return l;
-    }
-    public int getCluesSize()
-    {
-        LinkedList l=new LinkedList();
-        String[] columns = new String[]{ KEY_ROWID, KEY_LAT, KEY_LONG};
-        Cursor c = ourDatabase.query(DATABASE_TABLE1, columns,null, null, null, null, null);
-        int iRow = c.getColumnIndex(KEY_ROWID);
-        int iLat = c.getColumnIndex(KEY_LAT);
-        int iLong = c.getColumnIndex(KEY_LONG);
-        String result="";
-        for (c.moveToFirst(); !c.isAfterLast(); c.moveToNext()){
-            result = c.getString(iRow) + " " + c.getString(iLat) + " " + c.getString(iLong) ;
-            l.addLast(result);
-        }
-        return l.size();
     }
 
 	public String getData(int val) {                                        //To get the clue of our choice
@@ -141,7 +127,7 @@ public class DatabaseHelp {
 		int iRow = c.getColumnIndex(KEY_ROWID);
 		int iLat = c.getColumnIndex(KEY_LAT);
 		int iLong = c.getColumnIndex(KEY_LONG);
-		c.moveToPosition(val-1);
+		c.moveToPosition(val);
 		result = c.getString(iLat) + " " + c.getString(iLong) + "\n";
 
 		
