@@ -59,7 +59,7 @@ public class MainActivity extends ActionBarActivity {
     //Just a little change
 
     public void gameStart(View view) throws UnsupportedEncodingException, NoSuchAlgorithmException {     //On clicking the start button
-        DatabaseHelp db= new DatabaseHelp(this);
+        DatabaseHelp db= new DatabaseHelp(getApplicationContext());
         String password=editPassword.getText().toString();
         final MessageDigest messageDigest = MessageDigest.getInstance("MD5");
         messageDigest.reset();
@@ -154,13 +154,13 @@ public class MainActivity extends ActionBarActivity {
         }
         else if (result.compareTo("53e61336bb49ec978968786b07dea50b")==0) //results
         {
+            /*db.createResult("Override","Results","Override");
             db.createResult("Override","Results","Override");
             db.createResult("Override","Results","Override");
             db.createResult("Override","Results","Override");
             db.createResult("Override","Results","Override");
             db.createResult("Override","Results","Override");
-            db.createResult("Override","Results","Override");
-            db.createResult("Override","Results","Override");
+            db.createResult("Override","Results","Override");*/
 
             db.close();
             startActivity(new Intent(this,ResultActivity.class));
@@ -182,7 +182,7 @@ public class MainActivity extends ActionBarActivity {
     }
     public void downloadClues(View view)                //Downloads clues from the cloud
     {
-        final DatabaseHelp db= new DatabaseHelp(this);
+        final DatabaseHelp db= new DatabaseHelp(getApplicationContext());
         if(isOnline()) {
             //Log.d("score", "Start");
             ParseQuery<ParseObject> query = ParseQuery.getQuery("ClueObject");

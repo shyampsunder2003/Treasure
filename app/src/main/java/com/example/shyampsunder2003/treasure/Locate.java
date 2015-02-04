@@ -1,6 +1,7 @@
 package com.example.shyampsunder2003.treasure;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
@@ -24,6 +25,7 @@ import com.google.android.gms.maps.model.LatLng;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.LinkedList;
 
 
 public class Locate extends ActionBarActivity implements LocationListener, LocationSource{
@@ -95,7 +97,7 @@ public class Locate extends ActionBarActivity implements LocationListener, Locat
 
     public void onCreateRepeat()
     {
-        db= new DatabaseHelp(this);
+        db= new DatabaseHelp(getApplicationContext());
         db.open();
         NumberOfCluesDone=db.countSolvedClues();
         clueData=db.getData(NumberOfCluesDone+1);
@@ -135,10 +137,11 @@ public class Locate extends ActionBarActivity implements LocationListener, Locat
 
     public boolean mockCheck()
     {
-        if (Settings.Secure.getString(getContentResolver(),
+        /*if (Settings.Secure.getString(getContentResolver(),
                 Settings.Secure.ALLOW_MOCK_LOCATION).equals("0"))
             return false;
-        else return true;
+        else return true;*/
+        return false;
     }
 
     public void clueCheck(View view)
@@ -187,16 +190,50 @@ public class Locate extends ActionBarActivity implements LocationListener, Locat
             }
             else if (currLocation.distanceTo(clueLocation) < 30) {
                 //Toast.makeText(getApplicationContext(), "Congratulations! Next clue loading...", Toast.LENGTH_LONG).show();
-                new MaterialDialog.Builder(this)
-                        .title("Success")
-                        .content("Congratulations! Next clue loading...")
-                        .positiveText("Proceed")
-                        .negativeText("")
-                        .show();
-                db.open();
-                db.createResult(formattedDate, "Success", "Success");
-                db.close();
-                onCreateRepeat();
+                if(NumberOfCluesDone<7) {
+                    new MaterialDialog.Builder(this)
+                            .title("Success")
+                            .content("Congratulations! Next clue loading...")
+                            .positiveText("Proceed")
+                            .negativeText("")
+                            .show();
+                    db.open();
+                    db.createResult(formattedDate, "Success", "Success");
+                    LinkedList ll=db.getResults();
+                    Log.d("Locate results",String.valueOf(ll.size()));
+                    db.close();
+                    onCreateRepeat();
+                }
+                else if(NumberOfCluesDone==7)
+                {
+                    new MaterialDialog.Builder(this)
+                            .title("Success")
+                            .content("Congratulations! You have finished solving all the clues!")
+                            .positiveText("Proceed")
+                            .negativeText("")
+                            .show();
+                    db.open();
+                    db.createResult(formattedDate, "Success", "Success");
+                    db.close();
+                    SharedPreferences sharedpreferences=getSharedPreferences("firstpref",MODE_PRIVATE);
+                    SharedPreferences.Editor editor=sharedpreferences.edit();
+                    editor.clear();
+                    editor.commit();
+                    Intent intent=new Intent(this,MainActivity.class);
+                    startActivity(intent);
+
+                }
+                else
+                {
+                    new MaterialDialog.Builder(this)
+                            .title("Success")
+                            .content("You have already finished all the clues! Report to Organizers!")
+                            .positiveText("Proceed")
+                            .negativeText("")
+                            .show();
+
+
+                }
             } else {
                 //Toast.makeText(getApplicationContext(), "Nope, keep trying!", Toast.LENGTH_LONG).show();
                 new MaterialDialog.Builder(this)
