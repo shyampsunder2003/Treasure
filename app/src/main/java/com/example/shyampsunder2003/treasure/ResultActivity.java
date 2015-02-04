@@ -20,7 +20,7 @@ public class ResultActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.results);
         result= (TextView) findViewById(R.id.tvResults);
-        db= new DatabaseHelp(this);
+        db= new DatabaseHelp(getApplicationContext());
         db.open();
         ll=db.getResults();
         for (int i = 0; i < ll.size(); i++) {

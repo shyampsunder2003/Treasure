@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.util.LinkedList;
 
@@ -103,6 +104,7 @@ public class DatabaseHelp {
     }
     public LinkedList getResults()
     {
+        Log.d("Results","Written");
         LinkedList l=new LinkedList();
         String[] columns = new String[]{ KEY_ROWID, KEY_TIME, KEY_RESULT};
         Cursor c = ourDatabase.query(DATABASE_TABLE2, columns,null, null, null, null, null);
@@ -110,9 +112,11 @@ public class DatabaseHelp {
         int iTime = c.getColumnIndex(KEY_TIME);
         int iResult = c.getColumnIndex(KEY_RESULT);
         String result="";
+        Log.d("Results",String.valueOf(c.getCount()));
         for (c.moveToFirst(); !c.isAfterLast(); c.moveToNext()){
             result = c.getString(iRow) + " " + c.getString(iTime) + " " + c.getString(iResult) ;
             l.addLast(result);
+            Log.d("Results","Written");
         }
 
         return l;
@@ -127,7 +131,7 @@ public class DatabaseHelp {
 		int iRow = c.getColumnIndex(KEY_ROWID);
 		int iLat = c.getColumnIndex(KEY_LAT);
 		int iLong = c.getColumnIndex(KEY_LONG);
-		c.moveToPosition(val);
+		c.moveToPosition(val-1);
 		result = c.getString(iLat) + " " + c.getString(iLong) + "\n";
 
 		
