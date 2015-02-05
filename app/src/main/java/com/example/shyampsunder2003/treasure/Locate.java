@@ -54,22 +54,15 @@ public class Locate extends ActionBarActivity implements LocationListener, Locat
             startActivity(intent);
         }
         textClue=(TextView) findViewById(R.id.tvclueNum);
-        //textLat=(TextView) findViewById(R.id.textView9);
-        //textLong=(TextView) findViewById(R.id.textView8);
         textAccuracy=(TextView) findViewById(R.id.tvAcc);
         Criteria criteria = new Criteria();
         provider = service.getBestProvider(criteria, false);
         Location location = service.getLastKnownLocation(provider);
         if (location != null) {
-            //System.out.println("Provider " + provider + " has been selected.");
             lat=location.getLatitude();
             longi=location.getLongitude();
-            //textLat.setText(String.valueOf(location.getLatitude()));
-            //textLong.setText(String.valueOf(location.getLongitude()));
             textAccuracy.setText("Location N/A");
         } else {
-            //textLat.setText("Location not available");
-            //textLong.setText("Location not available");
             textAccuracy.setText("Location N/A");
         }
 
@@ -165,8 +158,6 @@ public class Locate extends ActionBarActivity implements LocationListener, Locat
         lat=location.getLatitude();
         longi=location.getLongitude();
         accuracy=location.getAccuracy();
-        //textLat.setText(String.valueOf(location.getLatitude()));
-        //textLong.setText(String.valueOf(location.getLongitude()));
         textAccuracy.setText(String.valueOf(location.getAccuracy()));
     }
 

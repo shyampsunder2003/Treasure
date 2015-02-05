@@ -39,11 +39,11 @@ public class CongratsActivity extends Activity {
     }
     public void checkResults(View v){
         resultKey=resultField.getText().toString();
-        if(resultKey.equals("results")){ //Change it to MD5
+        if(resultKey.equals("e6078b9b1aac915d11b9fd59791030bf")){ //Change it to MD5
             startActivity(new Intent(this,ResultActivity.class));
         }
         else{
-            Toast.makeText(this,"Please go to the registration desk to know the results"+resultKey, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,"Please go to the registration desk to know the results", Toast.LENGTH_SHORT).show();
         }
     }
 }

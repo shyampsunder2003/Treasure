@@ -26,7 +26,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:21.0.3'
     compile files('libs/Parse-1.8.2/Parse-1.8.2.jar')
     compile 'com.parse.bolts:bolts-android:1.+'
-
+    compile 'se.simbio.encryption:library:1.1.0'
     compile 'com.android.support:cardview-v7:21.0.0'
     compile 'com.android.support:support-v4:21.0.0'
     compile 'com.rengwuxian.materialedittext:library:1.8.2'
