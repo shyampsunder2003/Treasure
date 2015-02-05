@@ -116,20 +116,30 @@
 
         </android.support.v7.widget.CardView>
 
-       <!-- <TextView
-            android:layout_width="fill_parent"
+        <EditText
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="DIGIHUNT"
-            android:gravity="left"
-            android:textSize="30sp"
-            android:textColor="#FFFFFF"
-            android:id="@+id/textView"
-            android:layout_alignParentTop="true"
-            android:layout_alignLeft="@+id/view"
-            android:layout_alignStart="@+id/view"
-            android:layout_margin="50dp"/>
-            -->
+            android:inputType="textPassword"
+            android:ems="10"
+            android:id="@+id/editText"
+            android:layout_alignBottom="@+id/view"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="64dp" />
+
+        <!-- <TextView
+             android:layout_width="fill_parent"
+             android:layout_height="wrap_content"
+             android:textAppearance="?android:attr/textAppearanceLarge"
+             android:text="DIGIHUNT"
+             android:gravity="left"
+             android:textSize="30sp"
+             android:textColor="#FFFFFF"
+             android:id="@+id/textView"
+             android:layout_alignParentTop="true"
+             android:layout_alignLeft="@+id/view"
+             android:layout_alignStart="@+id/view"
+             android:layout_margin="50dp"/>
+             -->
 
 
 

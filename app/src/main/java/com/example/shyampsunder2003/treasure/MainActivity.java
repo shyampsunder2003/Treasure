@@ -32,7 +32,7 @@ import java.util.List;
 public class MainActivity extends ActionBarActivity {
 
     TextView clueStatus, welcome;
-    EditText editPassword;
+    EditText editPassword,cryptPassword;
     SharedPreferences sharedpreferences;
     Intent intentToLocate;
 
@@ -52,6 +52,7 @@ public class MainActivity extends ActionBarActivity {
             clueStatus = (TextView) findViewById(R.id.tvClues);
             welcome= (TextView) findViewById(R.id.tvWelcome);
             editPassword = (EditText) findViewById(R.id.etPass);
+            cryptPassword= (EditText) findViewById(R.id.editText);
             Typeface font = Typeface.createFromAsset(getAssets(), "RobotoCondensed-Bold.ttf");
             welcome.setTypeface(font);
             welcome.setText("DIGIHUNT 2015");
@@ -173,45 +174,62 @@ public class MainActivity extends ActionBarActivity {
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
-    public void downloadClues(View view)                //Downloads clues from the cloud
+    public void downloadClues(View view) throws Exception                //Downloads clues from the cloud
     {
-        final DatabaseHelp db= new DatabaseHelp(getApplicationContext());
-        if(isOnline()) {
-            //Log.d("score", "Start");
-            ParseQuery<ParseObject> query = ParseQuery.getQuery("ClueObject");
-            query.findInBackground(new FindCallback<ParseObject>() {
-                @Override
-                public void done(List<ParseObject> parseObjects, com.parse.ParseException e) {
-                    if (e == null) {
-                        Log.d("Download", "Retrieved " + parseObjects.size() + " scores");
-                        db.open();
-                        db.delete();                    //To be removed on deployment
-                        int i,j;
-                        for(i=0;i<parseObjects.size();++i) {
-                            for (j = 0; j < parseObjects.size(); ++j) {
-                                int val=parseObjects.get(j).getInt("Number");
-                                if(val==i+1)
-                                    break;
+        final String password=cryptPassword.getText().toString();
+        final MessageDigest messageDigest = MessageDigest.getInstance("MD5");
+        messageDigest.reset();
+        messageDigest.update(password.getBytes(Charset.forName("UTF8")));
+        final byte[] resultByte = messageDigest.digest();
+        final String result = new String(Hex.encodeHex(resultByte));
+        if(result=="28bc8c78881b2f89bbeab4f9bb8fbeda") {                //password='clue'
+            final DatabaseHelp db = new DatabaseHelp(getApplicationContext());
+            if (isOnline()) {
+                //Log.d("score", "Start");
+                final SimpleCrypto s = new SimpleCrypto();
+                ParseQuery<ParseObject> query = ParseQuery.getQuery("ClueTest");
+                query.findInBackground(new FindCallback<ParseObject>() {
+                    @Override
+                    public void done(List<ParseObject> parseObjects, com.parse.ParseException e) {
+                        if (e == null) {
+                            Log.d("Download", "Retrieved " + parseObjects.size() + " scores");
+                            db.open();
+                            db.delete();                    //To be removed on deployment
+                            int i, j;
+                            for (i = 0; i < parseObjects.size(); ++i) {
+                                for (j = 0; j < parseObjects.size(); ++j) {
+                                    int val = parseObjects.get(j).getInt("Number");
+                                    if (val == i + 1)
+                                        break;
+                                }
+                                String lat = null;
+                                String longitude = null;
+                                try {
+                                    lat = s.decrypt(password, parseObjects.get(j).getString("Latitude"));
+                                    longitude = s.decrypt(password,parseObjects.get(j).getString("Longitude"));
+                                } catch (Exception e1) {
+                                    e1.printStackTrace();
+                                }
+                                Log.d("Download", lat + " " + longitude);
+                                db.createEntry(lat, longitude);
                             }
-                            String lat = parseObjects.get(j).getString("Latitude");
-                            String longitude = parseObjects.get(j).getString("Longitude");
-                            Log.d("Download", lat + " " + longitude);
-                            db.createEntry(lat, longitude);
+                            db.close();
+
+
+                            clueStatus.setText("Completed");
+                        } else {
+                            Log.d("score", "Error: " + e.getMessage());
+                            Toast.makeText(getApplicationContext(), e.getMessage().toString(), Toast.LENGTH_LONG).show();
                         }
-                        db.close();
-
-
-                        clueStatus.setText("Completed");
-                    } else {
-                        Log.d("score", "Error: " + e.getMessage());
-                        Toast.makeText(getApplicationContext(), e.getMessage().toString(),Toast.LENGTH_LONG).show();
                     }
-                }
-            });
+                });
+            } else {
+                Toast.makeText(this, "Please check your Internet Connection", Toast.LENGTH_LONG).show();
+            }
         }
         else
         {
-            Toast.makeText(this,"Please check your Internet Connection",Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Enter correct clue password", Toast.LENGTH_LONG).show();
         }
 
     }
