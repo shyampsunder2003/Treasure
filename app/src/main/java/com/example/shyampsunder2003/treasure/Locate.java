@@ -193,8 +193,12 @@ public class Locate extends ActionBarActivity implements LocationListener, Locat
             Toast.makeText(getApplicationContext(),"Location Unavailable", Toast.LENGTH_SHORT).show();
         }
         else {
-            currLocation.setLatitude(lat);
-            currLocation.setLongitude(longi);
+            if(currLocation!=null) {
+                currLocation=service.getLastKnownLocation(provider);
+            }
+                currLocation.setLatitude(lat);
+                currLocation.setLongitude(longi);
+
             clueLocation.setLatitude(clueLat);
             clueLocation.setLongitude(clueLongi);
             /*if(mockCheck())
@@ -281,6 +285,7 @@ public class Locate extends ActionBarActivity implements LocationListener, Locat
                 db.createResult(formattedDate, "Failure", "Wrong Location");
                 db.close();
             }
+
         }
     }
 
