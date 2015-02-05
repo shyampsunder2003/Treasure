@@ -176,13 +176,14 @@ public class MainActivity extends ActionBarActivity {
     }
     public void downloadClues(View view) throws Exception                //Downloads clues from the cloud
     {
-        final String password=cryptPassword.getText().toString();
+        final String password=editPassword.getText().toString();
         final MessageDigest messageDigest = MessageDigest.getInstance("MD5");
         messageDigest.reset();
         messageDigest.update(password.getBytes(Charset.forName("UTF8")));
         final byte[] resultByte = messageDigest.digest();
         final String result = new String(Hex.encodeHex(resultByte));
-        if(result=="28bc8c78881b2f89bbeab4f9bb8fbeda") {                //password='clue'
+        if(result=="1a1dc91c907325c69271ddf0c944bc72") {                //password='pass'
+            Log.d("Clue pass","Entered correctly");
             final DatabaseHelp db = new DatabaseHelp(getApplicationContext());
             if (isOnline()) {
                 //Log.d("score", "Start");
@@ -226,9 +227,7 @@ public class MainActivity extends ActionBarActivity {
             } else {
                 Toast.makeText(this, "Please check your Internet Connection", Toast.LENGTH_LONG).show();
             }
-        }
-        else
-        {
+        } else{
             Toast.makeText(this, "Enter correct clue password", Toast.LENGTH_LONG).show();
         }
 
