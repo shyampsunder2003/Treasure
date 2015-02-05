@@ -176,19 +176,19 @@ public class MainActivity extends ActionBarActivity {
     }
     public void downloadClues(View view) throws Exception                //Downloads clues from the cloud
     {
-        final String password=editPassword.getText().toString();
-        final MessageDigest messageDigest = MessageDigest.getInstance("MD5");
-        messageDigest.reset();
-        messageDigest.update(password.getBytes(Charset.forName("UTF8")));
-        final byte[] resultByte = messageDigest.digest();
-        final String result = new String(Hex.encodeHex(resultByte));
-        if(result=="1a1dc91c907325c69271ddf0c944bc72") {                //password='pass'
+//        final String password=editPassword.getText().toString();
+//        final MessageDigest messageDigest = MessageDigest.getInstance("MD5");
+//        messageDigest.reset();
+//        messageDigest.update(password.getBytes(Charset.forName("UTF8")));
+//        final byte[] resultByte = messageDigest.digest();
+//        final String result = new String(Hex.encodeHex(resultByte));
+//        if(result.compareTo("1a1dc91c907325c69271ddf0c944bc72")==0) {                //password='pass'
             Log.d("Clue pass","Entered correctly");
             final DatabaseHelp db = new DatabaseHelp(getApplicationContext());
             if (isOnline()) {
                 //Log.d("score", "Start");
-                final SimpleCrypto s = new SimpleCrypto();
-                ParseQuery<ParseObject> query = ParseQuery.getQuery("ClueTest");
+//                final SimpleCrypto s = new SimpleCrypto();
+                ParseQuery<ParseObject> query = ParseQuery.getQuery("ClueObject");
                 query.findInBackground(new FindCallback<ParseObject>() {
                     @Override
                     public void done(List<ParseObject> parseObjects, com.parse.ParseException e) {
@@ -203,14 +203,15 @@ public class MainActivity extends ActionBarActivity {
                                     if (val == i + 1)
                                         break;
                                 }
-                                String lat = null;
-                                String longitude = null;
-                                try {
-                                    lat = s.decrypt(password, parseObjects.get(j).getString("Latitude"));
-                                    longitude = s.decrypt(password,parseObjects.get(j).getString("Longitude"));
-                                } catch (Exception e1) {
-                                    e1.printStackTrace();
-                                }
+//                                Log.d("Clue pass",parseObjects.get(j).getString("Latitude"));
+                                String lat = parseObjects.get(j).getString("Latitude");
+                                String longitude = parseObjects.get(j).getString("Longitude");
+//                                try {
+//                                    lat = s.decrypt(password, parseObjects.get(j).getString("Latitude"));
+//                                    longitude = s.decrypt(password,parseObjects.get(j).getString("Longitude"));
+//                                } catch (Exception e1) {
+//                                    e1.printStackTrace();
+//                                }
                                 Log.d("Download", lat + " " + longitude);
                                 db.createEntry(lat, longitude);
                             }
@@ -227,9 +228,9 @@ public class MainActivity extends ActionBarActivity {
             } else {
                 Toast.makeText(this, "Please check your Internet Connection", Toast.LENGTH_LONG).show();
             }
-        } else{
-            Toast.makeText(this, "Enter correct clue password", Toast.LENGTH_LONG).show();
-        }
+//        } else{
+//            Toast.makeText(this, "Enter correct clue password", Toast.LENGTH_LONG).show();
+//        }
 
     }
     @Override
