@@ -1,10 +1,12 @@
 package com.example.shyampsunder2003.treasure;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.media.Image;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v7.app.ActionBarActivity;
@@ -12,6 +14,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,6 +33,7 @@ import java.util.LinkedList;
 public class Locate extends ActionBarActivity implements LocationListener, LocationSource{
     private String provider,clueData;
     TextView textLat,textLong,textAccuracy,textClue;
+    ImageView img;
     Double lat,longi,clueLat,clueLongi;
     float accuracy=999;
     LocationManager service;
@@ -41,6 +45,7 @@ public class Locate extends ActionBarActivity implements LocationListener, Locat
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+        img=(ImageView) findViewById(R.id.Image);
         setUpMapIfNeeded();
         service = (LocationManager) getSystemService(LOCATION_SERVICE);
         boolean enabled = service.isProviderEnabled(LocationManager.GPS_PROVIDER);
@@ -101,7 +106,29 @@ public class Locate extends ActionBarActivity implements LocationListener, Locat
         db= new DatabaseHelp(getApplicationContext());
         db.open();
         NumberOfCluesDone=db.countSolvedClues();
+        String uri;
+        if(NumberOfCluesDone==0)
+            uri="@drawable/clue1";
+        else if(NumberOfCluesDone==1)
+            uri="@drawable/clue2";
+        else if(NumberOfCluesDone==2)
+            uri="@drawable/clue3";
+        else if(NumberOfCluesDone==3)
+            uri="@drawable/clue4";
+        else if(NumberOfCluesDone==4)
+            uri="@drawable/clue5";
+        else if(NumberOfCluesDone==5)
+            uri="@drawable/clue6";
+        else if(NumberOfCluesDone==6)
+            uri="@drawable/clue7";
+        else if(NumberOfCluesDone==7)
+            uri="@drawable/clue8";
+        else
+            uri="@drawable/clue1";
 
+        int imageResource = getResources().getIdentifier(uri, null, getPackageName());
+        Drawable res = getResources().getDrawable(imageResource);
+        img.setImageDrawable(res);
         //DIRTY PATCH to prevent getData on index(8+1) when back button is pressed from resultsActivity. I'm tired. 4.45 am. Going to Sleep
         if(NumberOfCluesDone<=7) {
             clueData = db.getData(NumberOfCluesDone + 1);
@@ -214,12 +241,12 @@ public class Locate extends ActionBarActivity implements LocationListener, Locat
                 }
                 else if(NumberOfCluesDone==7)
                 {
-                    new MaterialDialog.Builder(this)
+                    /*new MaterialDialog.Builder(this)
                             .title("Success")
                             .content("Congratulations! You have finished solving all the clues!")
                             .positiveText("Proceed")
                             .negativeText("")
-                            .show();
+                            .show();*/
                     db.open();
                     db.createResult(formattedDate, "Success", "Success");
                     db.close();
