@@ -223,7 +223,7 @@ public class Locate extends ActionBarActivity implements LocationListener, Locat
                 db.createResult(formattedDate,"Failure","Inaccurate");
                 db.close();
             }
-            else if (currLocation.distanceTo(clueLocation) < 30) {
+            else if (currLocation.distanceTo(clueLocation) < 50) {
                 //Toast.makeText(getApplicationContext(), "Congratulations! Next clue loading...", Toast.LENGTH_LONG).show();
                 if(NumberOfCluesDone<7) {
                     new MaterialDialog.Builder(this)
